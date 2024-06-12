@@ -9,7 +9,9 @@ export default class Selection extends Array {
     super();
 
     this.tree = tree;
-    this.push(...items)
+    if (Array.isArray(items)) {
+      this.push(...items)
+    }
   }
 
   remove () {

@@ -1,6 +1,7 @@
 import Tree from '../lib/Tree'
 import initKeyboardNavigation from '../utils/keyboardNavigation'
 import assert from '../utils/assert'
+import { provide } from 'vue';
 
 function initEvents (vm) {
   const { multiple, checkbox } = vm.opts
@@ -54,7 +55,7 @@ export default {
     let dataProvider
 
     this.tree = tree
-    this._provided.tree = tree
+    provide('tree', tree);
 
     if (!this.data && this.opts.fetchData) {
       // Get initial data if we don't have a data directly
