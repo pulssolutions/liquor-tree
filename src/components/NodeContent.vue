@@ -1,55 +1,52 @@
+<!-- eslint-disable vue/no-v-html -->
+<!-- eslint-disable vue/max-attributes-per-line -->
+<!-- eslint-disable vue/html-self-closing -->
+<template>
+  <div>
+    <input
+      v-if="node.isEditing"
+      ref="editCtrl"
+      v-model="nodeText"
+      type="text"
+      class="tree-input"
+      @blur="stopEditing"
+      @keyup.enter="stopEditing"
+      @mouseup.stop
+    />
+    <span v-else v-html="node.text"></span>
+  </div>
+</template>
+
 <script>
-  const NodeContent = {
-    name: 'node-content',
-    props: ['node'],
-    render (h) {
-      const node = this.node
-      const vm = this.node.tree.vm
+import { ref, onMounted } from "vue";
 
-      if (node.isEditing) {
-        let nodeText = node.text
-
-        this.$nextTick(_ => {
-          this.$refs.editCtrl.focus()
-        })
-
-        return h('input', {
-          domProps: {
-            value: node.text,
-            type: 'text'
-          },
-          class: 'tree-input',
-          on: {
-            input (e) {
-              nodeText = e.target.value
-            },
-            blur () {
-              node.stopEditing(nodeText)
-            },
-            keyup (e) {
-              if (e.keyCode === 13) {
-                node.stopEditing(nodeText)
-              }
-            },
-            mouseup (e) {
-              e.stopPropagation()
-            }
-          },
-          ref: 'editCtrl'
-        })
-      }
-
-      if (vm.$scopedSlots.default) {
-        return vm.$scopedSlots.default({ node: this.node })
-      }
-
-      return h('span', {
-        domProps: {
-          innerHTML: node.text
-        }
-      })
+export default {
+  name: "NodeContent",
+  props: {
+    node: {
+      type: Object,
+      required: true
     }
-  }
+  },
+  setup(props) {
+    const nodeText = ref(props.node.text);
+    const editCtrl = ref(null);
 
-  export default NodeContent
+    const stopEditing = () => {
+      props.node.stopEditing(nodeText.value);
+    };
+
+    onMounted(() => {
+      if (props.node.isEditing) {
+        editCtrl.value.focus();
+      }
+    });
+
+    return {
+      nodeText,
+      editCtrl,
+      stopEditing
+    };
+  }
+};
 </script>
