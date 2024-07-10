@@ -1,7 +1,7 @@
 {
   "name": "liquor-tree",
   "description": "A Vue.js tree component.",
-  "version": "0.2.70",
+  "version": "0.2.71",
   "author": "Kostiantyn <phlyze@gmail.com>",
   "scripts": {
     "lint": "vue-cli-service lint",
@@ -16,7 +16,9 @@
     "src",
     "dist/*.js"
   ],
-  "dependencies": {},
+  "dependencies": {
+    "mitt": "^3.0.1"
+  },
   "devDependencies": {
     "@rollup/plugin-alias": "^2.2.0",
     "@storybook/addon-notes": "^5.2.8",
